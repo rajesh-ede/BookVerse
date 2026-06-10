@@ -5,6 +5,7 @@ import bookverse.Dto.BookDTO;
 import bookverse.Model.Book;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -26,18 +27,22 @@ public class BookController {
     public Book getBybookId(@PathVariable Long id){
         return bookservice.getbookbyId(id);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping ("/home/add")
     public Book addBook(@Valid @RequestBody Book book){
         return bookservice.addBook(book);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/home/update/{id}")
     public Book updateBook(@PathVariable Long id,@RequestBody Book book){
         return bookservice.updateBook(id,book);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/home/delete/{id}")
     public String deleteBook(@PathVariable long id){
         return bookservice.deleteBook((id));
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/home/pagination")
     public Page<Book> getBooksWithPagination(@RequestParam int page,@RequestParam int size){
         return bookservice.getBooksWithPagination(page, size);
